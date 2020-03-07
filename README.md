@@ -4,7 +4,7 @@ Objetivo: Expor serviços referentes a restaurante.
 	
 ##Tecnologias:
 
-*Api RestFul
+*Api Restful
 
 *SpringBoot
 
