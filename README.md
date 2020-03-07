@@ -1,13 +1,13 @@
-#algafood-api
+# algafood-api
 
 Objetivo: Expor serviços referentes a restaurante.
 	
-##Tecnologias:
+## Tecnologias:
 
-*Api Restful
+* Api Restful
 
-*SpringBoot
+* SpringBoot
 
-*Hibernate
+* Hibernate
 
-*Lombok
+* Lombok
