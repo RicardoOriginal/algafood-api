@@ -26,7 +26,7 @@ public interface RestauranteRepository {
 	 * @param id
 	 * @return cozinha
 	 */
-	Restaurante porId(Long id);
+	Restaurante porId(Long restauranteId);
 	
 	/**
 	 * Metódo responsável por adicionar ou alterar um restaurante
@@ -37,7 +37,7 @@ public interface RestauranteRepository {
 	
 	/**
 	 * Metódo responsável por excluir um restaurante
-	 * @param cozinha
+	 * @param restauranteId
 	 */
-	void remover(Restaurante restaurante);
+	void remover(Long restauranteId);
 }

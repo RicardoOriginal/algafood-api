@@ -37,7 +37,7 @@ public interface CozinhaRepository {
 	
 	/**
 	 * Metódo responsável por excluir uma cozinha
-	 * @param cozinha
+	 * @param cozinhaId
 	 */
-	void remover(Cozinha cozinha);
+	void remover(Long cozinhaId);
 }
