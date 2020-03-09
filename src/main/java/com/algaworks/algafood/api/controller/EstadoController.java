@@ -34,7 +34,9 @@ public class EstadoController {
 	
 	@PostMapping
 	public ResponseEntity<Estado> adicionar(@RequestBody Estado estado){
+		
 		estado = cadastroEstado.adicionar(estado);
+		
 		return ResponseEntity.status(HttpStatus.CREATED).body(estado);
 	}
 	
@@ -42,8 +44,11 @@ public class EstadoController {
 	public ResponseEntity<?> listar(){
 		try {
 			List<Estado> estados = cadastroEstado.listar();
+			
 			return ResponseEntity.ok(estados);
+			
 		}catch (EntidadeNaoEncontradaException e) {
+			
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 	}
@@ -52,8 +57,11 @@ public class EstadoController {
 	public ResponseEntity<?> alterar(@PathVariable Long estadoId, @RequestBody Estado estado){
 		try {
 			estado = cadastroEstado.alterar(estadoId, estado);
+			
 			return ResponseEntity.ok(estado);
+			
 		}catch (EntidadeNaoEncontradaException e) {
+			
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 	}
@@ -62,8 +70,11 @@ public class EstadoController {
 	public ResponseEntity<?> buscar(@PathVariable Long estadoId){
 		try {
 			Estado estado = cadastroEstado.buscar(estadoId);
+			
 			return ResponseEntity.ok(estado);
+			
 		}catch (EntidadeNaoEncontradaException e) {
+			
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 	}
@@ -72,10 +83,15 @@ public class EstadoController {
 	public ResponseEntity<?> excluir(@PathVariable Long estadoId){
 		try {
 			cadastroEstado.excluir(estadoId);
+			
 			return ResponseEntity.noContent().build();
+			
 		}catch (EntidadeNaoEncontradaException e) {
+			
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+			
 		}catch (EntidadeEmUsoException e) {
+			
 			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
 		}
 	}
