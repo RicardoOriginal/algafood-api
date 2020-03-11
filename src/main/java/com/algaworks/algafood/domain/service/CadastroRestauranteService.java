@@ -38,12 +38,9 @@ public class CadastroRestauranteService {
 		
 		Long cozinhaId = restaurante.getCozinha().getId();
 		
-		Cozinha cozinha = cozinhaRepository.porId(cozinhaId);
-		
-		if(cozinha == null) {
-			throw new EntidadeNaoEncontradaException(
-					String.format("Não existe cadastro de cozinha com o código %d", cozinhaId));
-		}
+		Cozinha cozinha = cozinhaRepository.findById(cozinhaId)
+				.orElseThrow(() -> new EntidadeNaoEncontradaException(
+					String.format("Não existe cadastro de cozinha com o código %d", cozinhaId)));
 		
 		restaurante.setCozinha(cozinha);
 		
@@ -54,12 +51,9 @@ public class CadastroRestauranteService {
 		
 		Long codigoCozinha = restaurante.getCozinha().getId();
 		
-		Cozinha cozinha = cozinhaRepository.porId(codigoCozinha);
-		
-		if(cozinha == null) {
-			throw new EntidadeNaoEncontradaException(
-					String.format("Não existe cadastro de cozinha com o código %d", codigoCozinha));
-		}
+		cozinhaRepository.findById(codigoCozinha)
+				.orElseThrow(() -> new EntidadeNaoEncontradaException(
+						String.format("Não existe cadastro de cozinha com o código %d", codigoCozinha)));
 		
 		return restauranteRepository.salvar(restaurante);
 	}
