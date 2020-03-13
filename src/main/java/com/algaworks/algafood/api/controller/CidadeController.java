@@ -60,11 +60,18 @@ public class CidadeController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Cidade> adicionar(@RequestBody Cidade cidade){
+	public ResponseEntity<?> adicionar(@RequestBody Cidade cidade){
 		
-		cidade = cadastroCidade.adicionar(cidade);
-		
-		return ResponseEntity.ok(cidade);
+		try{
+			
+			cidade = cadastroCidade.adicionar(cidade);
+			
+			return ResponseEntity.status(HttpStatus.CREATED).body(cidade);
+			
+		}catch (EntidadeNaoEncontradaException e) {
+			
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		}
 	}
 	
 	@PutMapping("{cidadeId}")

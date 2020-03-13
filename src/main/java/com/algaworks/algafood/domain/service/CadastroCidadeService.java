@@ -2,6 +2,7 @@ package com.algaworks.algafood.domain.service;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -27,8 +28,10 @@ public class CadastroCidadeService {
 	@Autowired
 	private EstadoRepository estadoRepository;
 	
+	private final String CIDADE_NAO_ENCONTRADA = "Não há cidade cadastrada com o código: %d";
+	
 	public List<Cidade> listar(){
-		List<Cidade> cidades = cidadeRepository.todas();
+		List<Cidade> cidades = cidadeRepository.findAll();
 		
 		if(cidades.isEmpty()) {
 			throw new EntidadeNaoEncontradaException("Não há cidade cadastrada.");
@@ -38,53 +41,63 @@ public class CadastroCidadeService {
 	}
 	
 	public Cidade buscar(Long cidadeId) {
-		Cidade cidade = cidadeRepository.porId(cidadeId);
-		
-		verificaExistenciaCidade(cidadeId, cidade);
+		Cidade cidade = cidadeRepository.findById(cidadeId)
+				.orElseThrow(() -> entidadeNaoEncontrada(CIDADE_NAO_ENCONTRADA, cidadeId));
 		
 		return cidade;
 	}
 
-	private void verificaExistenciaCidade(Long cidadeId, Cidade cidade) {
-		if(cidade == null) {
-			throw new EntidadeNaoEncontradaException(
-					String.format("Não há cidade cadastrada com o código: %d.", cidadeId));
-		}
+	private EntidadeNaoEncontradaException entidadeNaoEncontrada(String mensagem, Long codigoEntidade) {
+		return new EntidadeNaoEncontradaException(
+				String.format(mensagem, codigoEntidade));
 	}
 	
 	public Cidade adicionar(Cidade cidade) {
-		return cidadeRepository.salvar(cidade);
+		try {
+			
+			Long estadoId = cidade.getEstado().getId();
+			Estado estado = estadoRepository.porId(estadoId);
+			return cidadeRepository.save(cidade);
+
+			if(estado == null) {
+				return new EntidadeNaoEncontradaException(
+						String.format("Não há estado cadastrado com o código: %d", estadoId));
+			}
+		}
+		
+		
 	}
-	
-	public Cidade alterar(Long cidadeId, Cidade cidade) {
-		
-		Cidade cidadeAtual = cidadeRepository.porId(cidadeId);
-		
-		verificaExistenciaCidade(cidadeId, cidadeAtual);
-		
+
+	private void validaEstado(Cidade cidade) {
 		Long estadoId = cidade.getEstado().getId();
 		
 		Estado estado = estadoRepository.porId(estadoId);
 		
 		if(estado == null) {
-			throw new EntidadeNaoEncontradaException(
-					String.format("Não há estado cadastrado com o código: %d", estadoId));
+			entidadeNaoEncontrada("Não há estado cadastrado com o código: %d", estadoId);
 		}
+	}
+	
+	public Cidade alterar(Long cidadeId, Cidade cidade) {
 		
-		cidade.setId(cidadeId);
+		Cidade cidadeAtual = cidadeRepository.findById(cidadeId)
+				.orElseThrow(() -> entidadeNaoEncontrada(CIDADE_NAO_ENCONTRADA, cidadeId));
 		
-		return cidadeRepository.salvar(cidade);
+		validaEstado(cidade);
+		
+		BeanUtils.copyProperties(cidade, cidadeAtual, "id");
+		
+		return cidadeRepository.save(cidadeAtual);
 	}
 	
 	public void remover(Long cidadeId) {
 		try {
 			
-			cidadeRepository.remover(cidadeId);
+			cidadeRepository.deleteById(cidadeId);
 			
 		}catch (EmptyResultDataAccessException e) {
 			
-			throw new EntidadeNaoEncontradaException(
-					String.format("Não há cidade cadastrada com o código: %d.", cidadeId));
+			entidadeNaoEncontrada(CIDADE_NAO_ENCONTRADA, cidadeId);
 		}
 	}
 }

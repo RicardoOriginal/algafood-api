@@ -24,7 +24,7 @@ public class BuscaCidadeMain {
 		
 		CidadeRepository cidades = applicationContext.getBean(CidadeRepository.class);
 		
-		System.out.println(cidades.todas());
+		System.out.println(cidades.findAll());
 	}
 
 }

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.algaworks.algafood.jpa.cidade;
 
 import org.springframework.boot.WebApplicationType;
@@ -24,6 +21,6 @@ public class RemoverCidadeMain {
 		
 		CidadeRepository cidades = applicationContext.getBean(CidadeRepository.class);
 		
-		cidades.remover(1L);
+		cidades.deleteById(1L);
 	}
 }

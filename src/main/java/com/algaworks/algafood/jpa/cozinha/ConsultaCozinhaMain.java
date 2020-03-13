@@ -24,7 +24,7 @@ public class ConsultaCozinhaMain {
 		
 		CozinhaRepository cozinhas = applicationContext.getBean(CozinhaRepository.class);
 		
-		List<Cozinha> todasCozinhas = cozinhas.todas();
+		List<Cozinha> todasCozinhas = cozinhas.findAll();
 		
 		todasCozinhas.forEach(cozinha ->{
 			System.out.println(cozinha.getNome());

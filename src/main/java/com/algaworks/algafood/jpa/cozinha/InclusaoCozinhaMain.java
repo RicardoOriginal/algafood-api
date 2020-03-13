@@ -26,6 +26,6 @@ public class InclusaoCozinhaMain {
 		cozinha.setId(1L);
 		cozinha.setNome("Brasileira");
 		
-		cozinhas.salvar(cozinha);
+		cozinhas.save(cozinha);
 	}
 }

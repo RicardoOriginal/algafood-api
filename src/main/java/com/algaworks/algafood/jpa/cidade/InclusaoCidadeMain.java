@@ -34,7 +34,7 @@ public class InclusaoCidadeMain {
 		
 		cidade.setEstado(estado);
 		
-		cidades.salvar(cidade);
+		cidades.save(cidade);
 	}
 
 }

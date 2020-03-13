@@ -35,7 +35,7 @@ public class AlteracaoCidadeMain {
 		
 		jatai.setEstado(goias);
 		
-		cidades.salvar(jatai);
+		cidades.save(jatai);
 	}
 
 }

@@ -24,7 +24,7 @@ public class ConsultaCidadeMain {
 		
 		CidadeRepository cidades = applicationContext.getBean(CidadeRepository.class);
 		
-		System.out.println(cidades.porId(1L));
+		System.out.println(cidades.findById(1L));
 	}
 
 }
