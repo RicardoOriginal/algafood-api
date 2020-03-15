@@ -23,7 +23,7 @@ public class BuscaEstadoMain {
 		
 		EstadoRepository estados = applicationContext.getBean(EstadoRepository.class);
 		
-		List<Estado> estadosLista = estados.todos();
+		List<Estado> estadosLista = estados.findAll();
 		
 		System.out.println(estadosLista);
 	}

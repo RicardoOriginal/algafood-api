@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,18 +30,14 @@ import com.algaworks.algafood.domain.service.CadastroCidadeService;
 public class CidadeController {
 
 	@Autowired
-	private CadastroCidadeService cadastroCidade;
+	private CadastroCidadeService cidadeService;
 	
 	@GetMapping
 	public ResponseEntity<?> listar(){
 		try {
-			
-			List<Cidade> cidades = cadastroCidade.listar();
-			
+			List<Cidade> cidades = cidadeService.listar();
 			return ResponseEntity.ok(cidades);
-			
 		}catch (EntidadeNaoEncontradaException e) {
-			
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 	}
@@ -48,29 +45,22 @@ public class CidadeController {
 	@GetMapping("/{cidadeId}")
 	public ResponseEntity<?> buscar(@PathVariable Long cidadeId){
 		try {
-			
-			Cidade cidade = cadastroCidade.buscar(cidadeId);
-			
+			Cidade cidade = cidadeService.buscarPor(cidadeId);
 			return ResponseEntity.ok(cidade);
-			
 		}catch (EntidadeNaoEncontradaException e) {
-			
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 	}
 	
 	@PostMapping
 	public ResponseEntity<?> adicionar(@RequestBody Cidade cidade){
-		
 		try{
-			
-			cidade = cadastroCidade.adicionar(cidade);
-			
-			return ResponseEntity.status(HttpStatus.CREATED).body(cidade);
-			
+			cidade = cidadeService.adicionar(cidade);
+			return ResponseEntity.status(HttpStatus.CREATED).build();
 		}catch (EntidadeNaoEncontradaException e) {
-			
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		}catch (DataIntegrityViolationException e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
 		}
 	}
 	
@@ -78,27 +68,21 @@ public class CidadeController {
 	public ResponseEntity<?> alterar(@PathVariable Long cidadeId, 
 			@RequestBody Cidade cidade){		
 		try {
-			
-			cidade = cadastroCidade.alterar(cidadeId, cidade);
-			
-			return ResponseEntity.status(HttpStatus.CREATED).body(cidade);
-			
-		}catch (Exception e) {
-			
+			cidade = cidadeService.alterar(cidadeId, cidade);
+			return ResponseEntity.status(HttpStatus.CREATED).build();
+		}catch (EntidadeNaoEncontradaException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		}catch (DataIntegrityViolationException e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
 		}
 	}
 	
 	@DeleteMapping("/{cidadeId}")
 	public ResponseEntity<?> remover(@PathVariable Long cidadeId){
 		try {
-			
-			cadastroCidade.remover(cidadeId);
-			
+			cidadeService.remover(cidadeId);
 			return ResponseEntity.noContent().build();
-			
 		}catch (EntidadeNaoEncontradaException e) {
-			
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 	}

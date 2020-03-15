@@ -28,8 +28,8 @@ public class InclusaoEstadoMain {
 		Estado rioDeJaneiro = new Estado();
 		rioDeJaneiro.setNome("Rio de Janeiro");
 		
-		estados.salvar(saoPaulo);
-		estados.salvar(rioDeJaneiro);
+		estados.save(saoPaulo);
+		estados.save(rioDeJaneiro);
 	}
 	
 }

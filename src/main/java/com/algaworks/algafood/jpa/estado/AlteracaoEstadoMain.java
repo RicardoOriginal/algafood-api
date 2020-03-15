@@ -27,6 +27,6 @@ public class AlteracaoEstadoMain {
 		estado.setId(1L);
 		estado.setNome("Amazonas");
 		
-		estados.salvar(estado);
+		estados.save(estado);
 	}
 }

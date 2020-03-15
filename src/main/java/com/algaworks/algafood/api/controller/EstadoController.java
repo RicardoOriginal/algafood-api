@@ -30,38 +30,14 @@ import com.algaworks.algafood.domain.service.CadastroEstadoService;
 public class EstadoController {
 
 	@Autowired
-	private CadastroEstadoService cadastroEstado;
-	
-	@PostMapping
-	public ResponseEntity<Estado> adicionar(@RequestBody Estado estado){
-		
-		estado = cadastroEstado.adicionar(estado);
-		
-		return ResponseEntity.status(HttpStatus.CREATED).body(estado);
-	}
+	private CadastroEstadoService estadoService;
 	
 	@GetMapping
 	public ResponseEntity<?> listar(){
 		try {
-			List<Estado> estados = cadastroEstado.listar();
-			
+			List<Estado> estados = estadoService.listar();
 			return ResponseEntity.ok(estados);
-			
 		}catch (EntidadeNaoEncontradaException e) {
-			
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		}
-	}
-	
-	@PutMapping("/{estadoId}")
-	public ResponseEntity<?> alterar(@PathVariable Long estadoId, @RequestBody Estado estado){
-		try {
-			estado = cadastroEstado.alterar(estadoId, estado);
-			
-			return ResponseEntity.ok(estado);
-			
-		}catch (EntidadeNaoEncontradaException e) {
-			
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 	}
@@ -69,12 +45,26 @@ public class EstadoController {
 	@GetMapping("/{estadoId}")
 	public ResponseEntity<?> buscar(@PathVariable Long estadoId){
 		try {
-			Estado estado = cadastroEstado.buscar(estadoId);
-			
+			Estado estado = estadoService.buscarPor(estadoId);
 			return ResponseEntity.ok(estado);
-			
 		}catch (EntidadeNaoEncontradaException e) {
-			
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		}
+	}
+	
+	@PostMapping
+	public ResponseEntity<Estado> adicionar(@RequestBody Estado estado){
+		estado = estadoService.adicionar(estado);
+		return ResponseEntity.status(HttpStatus.CREATED).body(estado);
+	}
+	
+	
+	@PutMapping("/{estadoId}")
+	public ResponseEntity<?> alterar(@PathVariable Long estadoId, @RequestBody Estado estado){
+		try {
+			estado = estadoService.alterar(estadoId, estado);
+			return ResponseEntity.ok(estado);
+		}catch (EntidadeNaoEncontradaException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 	}
@@ -82,16 +72,11 @@ public class EstadoController {
 	@DeleteMapping("/{estadoId}")
 	public ResponseEntity<?> excluir(@PathVariable Long estadoId){
 		try {
-			cadastroEstado.excluir(estadoId);
-			
+			estadoService.excluir(estadoId);
 			return ResponseEntity.noContent().build();
-			
 		}catch (EntidadeNaoEncontradaException e) {
-			
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-			
 		}catch (EntidadeEmUsoException e) {
-			
 			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
 		}
 	}

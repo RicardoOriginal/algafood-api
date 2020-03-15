@@ -32,8 +32,8 @@ public class AlteracaoRestauranteMain {
 		restaurante2.setNome("Casa da Vovó");
 		restaurante2.setTaxaFrete(new BigDecimal(8.8));
 		
-		restaurante1 = repository.salvar(restaurante1);
-		restaurante2 = repository.salvar(restaurante2);
+		restaurante1 = repository.save(restaurante1);
+		restaurante2 = repository.save(restaurante2);
 		
 		System.out.printf("%d - %s\n", restaurante1.getId(), restaurante1.getNome());
 		System.out.printf("%d - %s\n", restaurante2.getId(), restaurante2.getNome());

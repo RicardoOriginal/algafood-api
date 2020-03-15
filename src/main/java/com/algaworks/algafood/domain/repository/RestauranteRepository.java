@@ -1,7 +1,6 @@
 package com.algaworks.algafood.domain.repository;
 
-import java.util.List;
-
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.algaworks.algafood.domain.model.Restaurante;
@@ -13,31 +12,5 @@ import com.algaworks.algafood.domain.model.Restaurante;
  * @author ricardolima.ti@gmail.com
  */
 @Repository
-public interface RestauranteRepository {
-	
-	/**
-	 * Metodo responsável por buscar todos os restaurantes
-	 * @return lista de cozinhas
-	 */
-	List<Restaurante> todos();
-	
-	/**
-	 * Método responsável por buscar um restaurante pelo codigo de identificação
-	 * @param id
-	 * @return cozinha
-	 */
-	Restaurante porId(Long restauranteId);
-	
-	/**
-	 * Metódo responsável por adicionar ou alterar um restaurante
-	 * @param cozinha
-	 * @return cozinha
-	 */
-	Restaurante salvar(Restaurante restaurante);
-	
-	/**
-	 * Metódo responsável por excluir um restaurante
-	 * @param restauranteId
-	 */
-	void remover(Long restauranteId);
+public interface RestauranteRepository extends JpaRepository<Restaurante, Long>{
 }

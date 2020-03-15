@@ -29,6 +29,6 @@ public class InclusaoRestauranteMain {
 		restaurante.setNome("Novo Restaurante");
 		restaurante.setTaxaFrete(new BigDecimal(10));
 		
-		restaurantes.salvar(restaurante);
+		restaurantes.save(restaurante);
 	}
 }

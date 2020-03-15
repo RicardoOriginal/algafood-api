@@ -5,6 +5,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
 import com.algaworks.algafood.AlgafoodApiApplication;
+import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 
@@ -22,7 +23,11 @@ public class BuscaRestauranteMain {
 		
 		RestauranteRepository repository = applicationContext.getBean(RestauranteRepository.class);
 		
-		Restaurante restaurante = repository.porId(1L);
+		Long restauranteId = 1L;
+		
+		Restaurante restaurante = repository.findById(restauranteId).orElseThrow(
+				() -> new EntidadeNaoEncontradaException(
+						String.format("Não há restaurante no cadastro com o código %d", restauranteId)));
 		
 		System.out.println(restaurante.getNome());
 	}

@@ -5,6 +5,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
 import com.algaworks.algafood.AlgafoodApiApplication;
+import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.EstadoRepository;
 
@@ -22,7 +23,10 @@ public class ConsultaEstadoMain {
 		
 		EstadoRepository estados = applicationContext.getBean(EstadoRepository.class);
 		
-		Estado estado = estados.porId(1L);
+		Long estadoId = 1L;
+		
+		Estado estado = estados.findById(estadoId).orElseThrow(()-> new EntidadeNaoEncontradaException(
+				String.format("Não há cadastro de cidade com o código: %d", estadoId)));
 		
 		System.out.println(estado);
 	}

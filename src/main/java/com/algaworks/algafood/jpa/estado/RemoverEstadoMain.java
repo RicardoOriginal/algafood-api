@@ -21,6 +21,6 @@ public class RemoverEstadoMain {
 		
 		EstadoRepository estados = applicationContext.getBean(EstadoRepository.class);
 		
-		estados.remove(1L);
+		estados.deleteById(1L);
 	}
 }

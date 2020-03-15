@@ -2,9 +2,9 @@ package com.algaworks.algafood.domain.service;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
@@ -24,64 +24,38 @@ public class CadastroEstadoService {
 	@Autowired
 	private EstadoRepository estadoRepository;
 	
-	public Estado adicionar(Estado estado) {
-		
-		return estadoRepository.salvar(estado);
-	}
-	
 	public List<Estado> listar(){
-		List<Estado> estados = estadoRepository.todos();
-		
+		List<Estado> estados = estadoRepository.findAll();
 		if(estados == null) {
-			
-			throw new EntidadeNaoEncontradaException("Não há nenhum estado cadastrado");
+			throw new EntidadeNaoEncontradaException("Não há estado cadastrado");
 		}
-		
 		return estados;
 	}
 	
-	public Estado alterar(Long estadoId, Estado estado) {
-		
-		Estado estadoAtual = estadoRepository.porId(estadoId);
-		
-		verificaEstadoVazio(estadoId, estadoAtual);
-		
-		estado.setId(estadoId);
-		
-		return estadoRepository.salvar(estado);
+	public Estado buscarPor(Long estadoId) {
+		return estadoRepository.findById(estadoId).orElseThrow(
+				() -> new EntidadeNaoEncontradaException(
+						String.format("Não há estado cadastrado com o código: %d", estadoId)));
 	}
 	
-	public Estado buscar(Long estadoId) {
-		
-		Estado estado =  estadoRepository.porId(estadoId);
-		
-		verificaEstadoVazio(estadoId, estado);
-		
-		return estado;
+	public Estado adicionar(Estado estado) {
+		return estadoRepository.save(estado);
 	}
-
-	private void verificaEstadoVazio(Long estadoId, Estado estado) {
-		if(estado == null) {
-			
-			throw new EntidadeNaoEncontradaException(
-					String.format("Não existe no cadastro estado com o código %d", estadoId));
-		}
+	
+	public Estado alterar(Long estadoId, Estado estado) {
+		Estado estadoAtual = buscarPor(estadoId);
+		BeanUtils.copyProperties(estado, estadoAtual, "id");
+		return estadoRepository.save(estadoAtual);
 	}
-
+	
 	public void excluir(Long estadoId) {
+		buscarPor(estadoId);
 		try {
-			
-			estadoRepository.remove(estadoId);
-			
-		}catch (EmptyResultDataAccessException e) {
-			
-			throw new EntidadeNaoEncontradaException(
-					String.format("Não existe no cadastro estado com o código %d", estadoId));
+			estadoRepository.deleteById(estadoId);
 			
 		}catch (DataIntegrityViolationException e) {
-			
 			throw new EntidadeEmUsoException(
-					String.format("Estado de código %d não pode ser removido, pois está em uso", estadoId));
+					String.format("Estado de código %d não pode ser removido, pois está em uso.", estadoId));
 		}
 	}
 }
