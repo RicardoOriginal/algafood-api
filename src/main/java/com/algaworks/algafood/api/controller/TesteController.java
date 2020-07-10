@@ -52,7 +52,7 @@ public class TesteController {
 	
 	@GetMapping("restaurantes/por-nome")
 	public ResponseEntity<List<Restaurante>> restaurantesPorNomeECozinhaId(String nome, Long cozinhaId){
-		return ResponseEntity.ok(restauranteRepository.findByNomeContainingAndCozinhaId(nome, cozinhaId));
+		return ResponseEntity.ok(restauranteRepository.consultarPorNome(nome, cozinhaId));
 	}
 	
 	@GetMapping("restaurantes/primeiro-por-nome")
