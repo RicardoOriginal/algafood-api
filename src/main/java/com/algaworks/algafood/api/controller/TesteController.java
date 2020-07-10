@@ -60,6 +60,11 @@ public class TesteController {
 		return restauranteRepository.findFirtsRestauranteByNomeContaining(nome);
 	}
 	
+	@GetMapping("restaurante/por-nome-e-frete")
+	public List<Restaurante> RestaurantePorNomeFrete(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal){
+		return restauranteRepository.find(nome, taxaFreteInicial, taxaFreteFinal);
+	}
+	
 	@GetMapping("restaurantes/count-por-cozinha")
 	public int restaurantesCountPorCozinha(Long cozinhaId){
 		return restauranteRepository.countByCozinhaId(cozinhaId);
