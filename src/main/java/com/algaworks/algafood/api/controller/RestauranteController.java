@@ -69,6 +69,7 @@ public class RestauranteController {
 	@PutMapping("/{restauranteId}")
 	public ResponseEntity<?> alterar(@PathVariable Long restauranteId, @RequestBody Restaurante restaurante) {
 		try {
+			restaurante.setId(restauranteId);
 			restaurante = restauranteService.alterar(restaurante);
 			return ResponseEntity.ok(restaurante);
 		} catch (EntidadeNaoEncontradaException e) {
