@@ -50,7 +50,7 @@ public class CadastroRestauranteService {
 	
 	public Restaurante alterar(Restaurante restaurante) {
 		Restaurante restauranteAtul = buscarPor(restaurante.getId());
-		BeanUtils.copyProperties(restaurante, restauranteAtul, "id", "formasPagamento");
+		BeanUtils.copyProperties(restaurante, restauranteAtul, "id", "formasPagamento", "endereco", "dataCadastro");
 		return salvar(restauranteAtul);
 	}
 	
