@@ -25,3 +25,15 @@ insert into permissao(nome, descricao)values('alterar restaurantes', 'permite al
 insert into permissao(nome, descricao)values('exclui restaurantes', 'permite exclui restaurantes')
 
 insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (1,	1),(1,	2),(1,	3),(2,	1),(3,	2),(3,	3)
+
+insert into produto(nome, descricao, preco, ativo, restaurante_id)values('Isca de peixe', 'filézinhos de peixe fritos', 33, 1, 1)
+
+insert into grupo(nome)values('administradores')
+insert into grupo(nome)values('gerentes')
+
+insert into grupo_permissao(grupo_id, permissao_id)values(1, 1), (1, 2), (1, 3), (2, 1), (2, 2)
+
+insert into usuario(nome, email, senha, data_cadastro)values('Ricardo', 'ricardolima.ti@gmail.com', 'Ricardo0511', utc_timestamp)
+insert into usuario(nome, email, senha, data_cadastro)values('Juliano', 'juliano@gmail.com', '12356', utc_timestamp)
+
+insert into usuario_grupo(usuario_id, grupo_id)values(1, 1), (2, 2)
