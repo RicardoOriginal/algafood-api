@@ -37,6 +37,9 @@ public class Cozinha {
 //	@JsonProperty("titulo")
 	@Column(nullable = false)
 	private String nome;
+
+	@Column(name = "observacao", nullable = false)
+	private Integer descricao;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "cozinha")
