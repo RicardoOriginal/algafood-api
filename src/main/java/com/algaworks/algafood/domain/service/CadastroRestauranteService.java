@@ -43,7 +43,7 @@ public class CadastroRestauranteService {
 	}
 
 	public Restaurante salvar(Restaurante restaurante) {
-		Cozinha cozinha = cozinhaService.buscarPor(restaurante.getCozinha().getId());
+		Cozinha cozinha = cozinhaService.buscarOuFalhar(restaurante.getCozinha().getId());
 		restaurante.setCozinha(cozinha);
 		return restauranteRepository.save(restaurante);
 	}
