@@ -24,12 +24,12 @@ public class EstadoController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Estado adicionar(@RequestBody Estado estado){
-		return estadoService.adicionar(estado);
+		return estadoService.salvar(estado);
 	}
 
 	@GetMapping("/{estadoId}")
 	public Estado buscar(@PathVariable Long estadoId){
-		return estadoService.buscarPor(estadoId);
+		return estadoService.buscarOuFalhar(estadoId);
 	}
 
 	@GetMapping

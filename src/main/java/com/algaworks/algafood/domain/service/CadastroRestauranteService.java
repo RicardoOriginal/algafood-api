@@ -1,7 +1,6 @@
 package com.algaworks.algafood.domain.service;
 
-import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.*;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
@@ -28,39 +27,39 @@ public class CadastroRestauranteService {
 	@Autowired
 	private CadastroCozinhaService cozinhaService;
 
-	public static final String MSG_RESTAURANTE_NAO_ENCONTRADO = "Não há restaurante no cadastro com o código: %d";
 	public static final String MSG_RESTAURANTE_EM_USO = "Restaurante de código %d não pode ser removido pois está em uso";
-	
+
+	public Restaurante salvar(Restaurante restaurante) {
+		try {
+			Cozinha cozinha = cozinhaService.buscarOuFalhar(restaurante.getCozinha().getId());
+			restaurante.setCozinha(cozinha);
+		}catch (CozinhaNaoEncontradaException e){
+			throw new NegocioException(e.getMessage(), e);
+		}
+		return restauranteRepository.save(restaurante);
+	}
+
+	public Restaurante buscarOuFalhar(Long restauranteId) {
+		return restauranteRepository.findById(restauranteId).orElseThrow(
+				()-> new RestauranteNaoEncontradoException(restauranteId));
+	}
+
 	public List<Restaurante> listar(){
 		return restauranteRepository.findAll();
 	}
-	
-	public Restaurante buscarPor(Long restauranteId) {
-		return restauranteRepository.findById(restauranteId).orElseThrow(
-				()-> new EntidadeNaoEncontradaException(
-						String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, restauranteId)));
-	}
 
-	public Restaurante salvar(Restaurante restaurante) {
-		Cozinha cozinha = cozinhaService.buscarOuFalhar(restaurante.getCozinha().getId());
-		restaurante.setCozinha(cozinha);
-		return restauranteRepository.save(restaurante);
-	}
-	
 	public Restaurante alterar(Long restauranteId, Restaurante restaurante) {
-		Restaurante restauranteAtul = buscarPor(restauranteId);
+		Restaurante restauranteAtul = buscarOuFalhar(restauranteId);
 		BeanUtils.copyProperties(restaurante, restauranteAtul, "id", "formasPagamento", "endereco", "dataCadastro");
 		return salvar(restauranteAtul);
 	}
 	
 	public void excluir(Long restauranteId) {
-		buscarPor(restauranteId);
 		try{
 			restauranteRepository.deleteById(restauranteId);
 
 		}catch (EmptyResultDataAccessException e){
-			throw new EntidadeNaoEncontradaException(
-					String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, restauranteId));
+			throw new RestauranteNaoEncontradoException(restauranteId);
 
 		}catch (DataIntegrityViolationException e){
 			throw new EntidadeEmUsoException(

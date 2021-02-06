@@ -2,6 +2,7 @@ package com.algaworks.algafood.domain.service;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.EstadoRepository;
 import org.springframework.beans.BeanUtils;
@@ -24,37 +25,33 @@ public class CadastroEstadoService {
 	@Autowired
     private EstadoRepository estadoRepository;
 
-	public static final String MSG_ESTADO_NAO_ENCONTRADA = "Não há estado cadastrado com o código: %d";
 	public static final String MSG_ESTADO_EM_USO = "Estado de código %d não pode ser removida pois está em uso";
+
+    public Estado salvar(Estado estado) {
+        return estadoRepository.save(estado);
+    }
+
+    public Estado buscarOuFalhar(Long estadoId) {
+        return estadoRepository.findById(estadoId).orElseThrow(
+                () -> new EstadoNaoEncontradoException(estadoId));
+    }
 
     public List<Estado> listar() {
         return estadoRepository.findAll();
     }
 
-    public Estado buscarPor(Long estadoId) {
-        return estadoRepository.findById(estadoId).orElseThrow(
-                () -> new EntidadeNaoEncontradaException(
-                        String.format(MSG_ESTADO_NAO_ENCONTRADA, estadoId)));
-    }
-
-    public Estado adicionar(Estado estado) {
-        return estadoRepository.save(estado);
-    }
-
     public Estado alterar(Long estadoId, Estado estado) {
-        Estado estadoAtual = buscarPor(estadoId);
+        Estado estadoAtual = buscarOuFalhar(estadoId);
         BeanUtils.copyProperties(estado, estadoAtual, "id");
         return estadoRepository.save(estadoAtual);
     }
 
     public void excluir(Long estadoId) {
-        buscarPor(estadoId);
         try {
             estadoRepository.deleteById(estadoId);
 
         } catch (EmptyResultDataAccessException e) {
-            throw new EntidadeNaoEncontradaException(
-                    String.format(MSG_ESTADO_NAO_ENCONTRADA, estadoId));
+            throw new EstadoNaoEncontradoException(estadoId);
 
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(

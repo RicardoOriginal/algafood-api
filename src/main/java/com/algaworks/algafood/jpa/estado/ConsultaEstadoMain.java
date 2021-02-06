@@ -1,5 +1,6 @@
 package com.algaworks.algafood.jpa.estado;
 
+import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
@@ -25,8 +26,7 @@ public class ConsultaEstadoMain {
 		
 		Long estadoId = 1L;
 		
-		Estado estado = estados.findById(estadoId).orElseThrow(()-> new EntidadeNaoEncontradaException(
-				String.format("Não há cadastro de cidade com o código: %d", estadoId)));
+		Estado estado = estados.findById(estadoId).orElseThrow(()-> new EstadoNaoEncontradoException(estadoId));
 		
 		System.out.println(estado);
 	}

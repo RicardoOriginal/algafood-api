@@ -1,15 +1,11 @@
 package com.algaworks.algafood.domain.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
 /**
  * Classe reponsável por traduzir excessoes de negócio
  *
  * @author ricardolima.ti@gmail.com
  */
 
-@ResponseStatus(value = HttpStatus.CONFLICT)
 public class EntidadeEmUsoException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;

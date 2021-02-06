@@ -33,7 +33,7 @@ public class RestauranteController {
 
 	@GetMapping("/{restauranteId}")
 	public Restaurante buscar(@PathVariable Long restauranteId) {
-		return restauranteService.buscarPor(restauranteId);
+		return restauranteService.buscarOuFalhar(restauranteId);
 	}
 
 	@GetMapping
@@ -51,7 +51,7 @@ public class RestauranteController {
 	@PatchMapping("/{restauranteId}")
 	@ResponseStatus(HttpStatus.OK)
 	public Restaurante alterarParcial(@PathVariable Long restauranteId, @RequestBody Map<String, Object> campos) {
-		Restaurante restaurante = restauranteService.buscarPor(restauranteId);
+		Restaurante restaurante = restauranteService.buscarOuFalhar(restauranteId);
 		merge(campos, restaurante);
 		return restauranteService.alterar(restauranteId, restaurante);
 	}

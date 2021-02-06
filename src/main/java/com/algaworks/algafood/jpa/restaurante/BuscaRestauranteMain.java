@@ -1,5 +1,6 @@
 package com.algaworks.algafood.jpa.restaurante;
 
+import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
@@ -26,8 +27,7 @@ public class BuscaRestauranteMain {
 		Long restauranteId = 1L;
 		
 		Restaurante restaurante = repository.findById(restauranteId).orElseThrow(
-				() -> new EntidadeNaoEncontradaException(
-						String.format("Não há restaurante no cadastro com o código %d", restauranteId)));
+				() -> new RestauranteNaoEncontradoException(restauranteId));
 		
 		System.out.println(restaurante.getNome());
 	}
