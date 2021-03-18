@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public class CidadeController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Cidade adicionar(@RequestBody Cidade cidade){
+	public Cidade adicionar(@RequestBody @Valid Cidade cidade){
 		return cidadeService.salvar(cidade);
 	}
 
@@ -39,7 +40,8 @@ public class CidadeController {
 
 	@PutMapping("{cidadeId}")
 	@ResponseStatus(HttpStatus.OK)
-	public Cidade atualizar(@PathVariable Long cidadeId, @RequestBody Cidade cidade){
+	public Cidade atualizar(@PathVariable Long cidadeId,
+							@RequestBody @Valid Cidade cidade){
 		return cidadeService.alterar(cidadeId, cidade);
 	}
 	

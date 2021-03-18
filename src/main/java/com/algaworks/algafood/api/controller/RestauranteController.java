@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.Groups;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,15 +35,13 @@ public class RestauranteController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Restaurante adicionar(@RequestBody @Valid Restaurante restaurante) {
+	public Restaurante adicionar(
+			@RequestBody @Valid Restaurante restaurante) {
 		return restauranteService.salvar(restaurante);
 	}
 
 	@GetMapping("/{restauranteId}")
 	public Restaurante buscar(@PathVariable Long restauranteId) {
-		if(true){
-			throw new IllegalArgumentException("teste");
-		}
 		return restauranteService.buscarOuFalhar(restauranteId);
 	}
 
@@ -52,7 +52,8 @@ public class RestauranteController {
 
 	@PutMapping("/{restauranteId}")
 	@ResponseStatus(HttpStatus.OK)
-	public Restaurante alterar(@PathVariable Long restauranteId, @RequestBody Restaurante restaurante) {
+	public Restaurante alterar(@PathVariable Long restauranteId,
+							   @RequestBody @Valid Restaurante restaurante) {
 			restaurante.setId(restauranteId);
 			return restauranteService.alterar(restauranteId, restaurante);
 	}

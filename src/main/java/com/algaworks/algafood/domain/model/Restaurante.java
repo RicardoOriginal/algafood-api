@@ -1,19 +1,23 @@
 package com.algaworks.algafood.domain.model;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
+import com.algaworks.algafood.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.groups.ConvertGroup;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Modelo responsável por transportar as informações do restaurante
@@ -30,15 +34,23 @@ public class Restaurante {
 	@EqualsAndHashCode.Include
 	private Long Id;
 
-	@NotNull
+	//@NotNull
+	//@NotEmpty
+	@NotBlank(message = "Nome é obrigatório")
 	@Column(nullable = false)
 	private String nome;
-	
+
+	//@DecimalMin("1")
+	@NotNull
+	@PositiveOrZero
 	@Column(name = "taxa_frete")
 	private BigDecimal taxaFrete;
 	
 //	@JsonIgnore
+	@Valid
+	@ConvertGroup(to = Groups.CozinhaId.class)
 	@ManyToOne
+	@NotNull
 	@JoinColumn(name = "cozinha_id", nullable = false)
 	private Cozinha cozinha;
 
