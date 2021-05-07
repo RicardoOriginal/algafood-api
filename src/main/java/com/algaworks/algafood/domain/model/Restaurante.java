@@ -1,6 +1,7 @@
 package com.algaworks.algafood.domain.model;
 
 import com.algaworks.algafood.Groups;
+import com.algaworks.algafood.core.validation.ValorZeroIncluiDescricao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,6 +25,7 @@ import java.util.List;
  *
  * @author ricardolima.ti@gmail.com
  */
+@ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
