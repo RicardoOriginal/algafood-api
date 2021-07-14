@@ -1,24 +1,36 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.Groups;
-import com.algaworks.algafood.domain.model.Restaurante;
-import com.algaworks.algafood.domain.service.CadastroRestauranteService;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.SmartValidator;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
+import com.algaworks.algafood.core.validation.ValidacaoException;
+import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.service.CadastroRestauranteService;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Controller responsável por receber requisições referentes a restaurantes
@@ -32,6 +44,9 @@ public class RestauranteController {
 
 	@Autowired
 	private CadastroRestauranteService restauranteService;
+	
+	@Autowired
+	private SmartValidator validator;
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
@@ -54,8 +69,8 @@ public class RestauranteController {
 	@ResponseStatus(HttpStatus.OK)
 	public Restaurante alterar(@PathVariable Long restauranteId,
 							   @RequestBody @Valid Restaurante restaurante) {
-			restaurante.setId(restauranteId);
-			return restauranteService.alterar(restauranteId, restaurante);
+		restaurante.setId(restauranteId);
+		return restauranteService.alterar(restauranteId, restaurante);
 	}
 
 	@PatchMapping("/{restauranteId}")
@@ -64,9 +79,19 @@ public class RestauranteController {
 									  HttpServletRequest request) {
 		Restaurante restaurante = restauranteService.buscarOuFalhar(restauranteId);
 		merge(campos, restaurante, request);
+		validate(restaurante, "restaurante");
 		return restauranteService.alterar(restauranteId, restaurante);
 	}
 	
+	private void validate(Restaurante restaurante, String objectName) {
+		BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
+		validator.validate(restaurante, bindingResult);
+		
+		if(bindingResult.hasErrors()) {
+			throw new ValidacaoException(bindingResult);
+		}
+	}
+
 	@DeleteMapping("/{restauranteId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void excluir(@PathVariable Long restauranteId){
