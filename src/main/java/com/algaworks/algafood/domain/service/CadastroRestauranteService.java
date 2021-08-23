@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class CadastroRestauranteService {
 
 	public static final String MSG_RESTAURANTE_EM_USO = "Restaurante de código %d não pode ser removido pois está em uso";
 
+	@Transactional
 	public Restaurante salvar(Restaurante restaurante) {
 		try {
 			Cozinha cozinha = cozinhaService.buscarOuFalhar(restaurante.getCozinha().getId());
@@ -48,12 +50,14 @@ public class CadastroRestauranteService {
 		return restauranteRepository.findAll();
 	}
 
+	@Transactional
 	public Restaurante alterar(Long restauranteId, Restaurante restaurante) {
 		Restaurante restauranteAtul = buscarOuFalhar(restauranteId);
 		BeanUtils.copyProperties(restaurante, restauranteAtul, "id", "formasPagamento", "endereco", "dataCadastro");
 		return salvar(restauranteAtul);
 	}
-	
+
+	@Transactional
 	public void excluir(Long restauranteId) {
 		try{
 			restauranteRepository.deleteById(restauranteId);

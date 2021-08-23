@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class CadastroCozinhaService {
 
 	public static final String MSG_COZINHA_EM_USO = "Cozinha de código %d não pode ser removida pois está em uso";
 
+	@Transactional
 	public Cozinha salvar(Cozinha cozinha) {
 		return cozinhaRepository.save(cozinha);
 	}
@@ -39,12 +41,14 @@ public class CadastroCozinhaService {
 		return cozinhaRepository.findAll();
 	}
 
+	@Transactional
 	public Cozinha alterar(Long cozinhaId, Cozinha cozinha) {
 		Cozinha cozinhaAtual = buscarOuFalhar(cozinhaId);
 		BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
 		return salvar(cozinhaAtual);
 	}
-	
+
+	@Transactional
 	public void excluir(Long cozinhaId) {
 		try {
 			cozinhaRepository.deleteById(cozinhaId);
