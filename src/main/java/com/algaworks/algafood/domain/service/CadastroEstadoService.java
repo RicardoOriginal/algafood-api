@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class CadastroEstadoService {
 
 	public static final String MSG_ESTADO_EM_USO = "Estado de código %d não pode ser removida pois está em uso";
 
+    @Transactional
     public Estado salvar(Estado estado) {
         return estadoRepository.save(estado);
     }
@@ -39,12 +41,7 @@ public class CadastroEstadoService {
         return estadoRepository.findAll();
     }
 
-    public Estado alterar(Long estadoId, Estado estado) {
-        Estado estadoAtual = buscarOuFalhar(estadoId);
-        BeanUtils.copyProperties(estado, estadoAtual, "id");
-        return estadoRepository.save(estadoAtual);
-    }
-
+    @Transactional
     public void excluir(Long estadoId) {
         try {
             estadoRepository.deleteById(estadoId);

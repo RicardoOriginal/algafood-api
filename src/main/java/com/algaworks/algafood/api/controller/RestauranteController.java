@@ -1,12 +1,17 @@
 package com.algaworks.algafood.api.controller;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
+import com.algaworks.algafood.api.assembler.RestauranteModelAssembler;
+import com.algaworks.algafood.api.assembler.RestauranteInputDisassembler;
+import com.algaworks.algafood.api.model.RestauranteModel;
+import com.algaworks.algafood.api.model.input.RestauranteInput;
+import com.algaworks.algafood.core.validation.ValidacaoException;
+import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.NegocioException;
+import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
+import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.service.CadastroRestauranteService;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,22 +20,13 @@ import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.SmartValidator;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.algaworks.algafood.core.validation.ValidacaoException;
-import com.algaworks.algafood.domain.model.Restaurante;
-import com.algaworks.algafood.domain.service.CadastroRestauranteService;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Controller responsável por receber requisições referentes a restaurantes
@@ -48,39 +44,49 @@ public class RestauranteController {
 	@Autowired
 	private SmartValidator validator;
 
+	@Autowired
+	private RestauranteModelAssembler restauranteModelAssembler;
+
+	@Autowired
+	private RestauranteInputDisassembler restauranteInputDisassembler;
+
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Restaurante adicionar(
-			@RequestBody @Valid Restaurante restaurante) {
-		return restauranteService.salvar(restaurante);
+	public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
+		final Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
+		return restauranteModelAssembler.toModel(restauranteService.salvar(restaurante));
 	}
 
 	@GetMapping("/{restauranteId}")
-	public Restaurante buscar(@PathVariable Long restauranteId) {
-		return restauranteService.buscarOuFalhar(restauranteId);
+	public RestauranteModel buscar(@PathVariable Long restauranteId) {
+		return restauranteModelAssembler.toModel(restauranteService.buscarOuFalhar(restauranteId));
 	}
 
 	@GetMapping
-	public List<Restaurante> listar() {
-		return restauranteService.listar();
+	public List<RestauranteModel> listar() {
+		return restauranteModelAssembler.toCollectionModel(restauranteService.listar());
 	}
 
 	@PutMapping("/{restauranteId}")
 	@ResponseStatus(HttpStatus.OK)
-	public Restaurante alterar(@PathVariable Long restauranteId,
-							   @RequestBody @Valid Restaurante restaurante) {
-		restaurante.setId(restauranteId);
-		return restauranteService.alterar(restauranteId, restaurante);
+	public RestauranteModel alterar(@PathVariable Long restauranteId, @RequestBody @Valid RestauranteInput restauranteInput) {
+		try {
+			Restaurante restauranteAtual = restauranteService.buscarOuFalhar(restauranteId);
+			restauranteInputDisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
+			return restauranteModelAssembler.toModel(restauranteService.salvar(restauranteAtual));
+		}catch (RestauranteNaoEncontradoException e){
+			throw new NegocioException(e.getMessage());
+		}
 	}
 
 	@PatchMapping("/{restauranteId}")
-	public Restaurante alterarParcial(@PathVariable Long restauranteId,
+	public RestauranteModel alterarParcial(@PathVariable Long restauranteId,
 									  @RequestBody Map<String, Object> campos,
 									  HttpServletRequest request) {
 		Restaurante restaurante = restauranteService.buscarOuFalhar(restauranteId);
 		merge(campos, restaurante, request);
 		validate(restaurante, "restaurante");
-		return restauranteService.alterar(restauranteId, restaurante);
+		return restauranteModelAssembler.toModel(restauranteService.alterar(restauranteId, restaurante));
 	}
 	
 	private void validate(Restaurante restaurante, String objectName) {
