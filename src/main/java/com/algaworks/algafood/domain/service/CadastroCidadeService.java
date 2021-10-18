@@ -1,6 +1,5 @@
 package com.algaworks.algafood.domain.service;
 
-import com.algaworks.algafood.AlgafoodApiApplication;
 import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
@@ -8,16 +7,13 @@ import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * Classe responsável por implementar serviços sobre cidades
@@ -38,8 +34,12 @@ public class CadastroCidadeService {
 
 	@Transactional
 	public Cidade salvar(Cidade cidade) {
-		Estado estado = estadoService.buscarOuFalhar(cidade.getEstado().getId());
-		cidade.setEstado(estado);
+		try {
+			Estado estado = estadoService.buscarOuFalhar(cidade.getEstado().getId());
+			cidade.setEstado(estado);
+		}catch (EstadoNaoEncontradoException e){
+			throw new NegocioException(e.getMessage(), e);
+		}
 		return cidadeRepository.save(cidade);
 	}
 
