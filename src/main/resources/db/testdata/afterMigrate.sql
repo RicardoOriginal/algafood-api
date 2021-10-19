@@ -42,9 +42,9 @@ insert into cidade(id, nome, estado_id)values(3, 'Belo Horizonte', 2);
 insert into cidade(id, nome, estado_id)values(4, 'São Paulo', 3);
 insert into cidade(id, nome, estado_id)values(5, 'Fortaleza', 4);
 
-insert into restaurante(id, nome, taxa_frete, cozinha_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, data_cadastro, data_atualizacao)values(1, 'Comida Caseira', 5.5, 1, 1, '75800-000', 'Rua Santos Dumont', '1657', 'Próximo a clinica Plena', 'Samuel Ganham', utc_timestamp, utc_timestamp);
-insert into restaurante(id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao)values(2, 'Itadakimazu', 9.8, 2, utc_timestamp, utc_timestamp);
-insert into restaurante(id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao)values(3, 'Mae Joana', 13.5, 2, utc_timestamp, utc_timestamp);
+insert into restaurante(id, nome, taxa_frete, cozinha_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, data_cadastro, data_atualizacao, ativo)values(1, 'Comida Caseira', 5.5, 1, 1, '75800-000', 'Rua Santos Dumont', '1657', 'Próximo a clinica Plena', 'Samuel Ganham', utc_timestamp, utc_timestamp, true);
+insert into restaurante(id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo)values(2, 'Itadakimazu', 9.8, 2, utc_timestamp, utc_timestamp, true);
+insert into restaurante(id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo)values(3, 'Mae Joana', 13.5, 2, utc_timestamp, utc_timestamp, true);
 
 insert into forma_Pagamento(descricao)values('Dinheiro');
 insert into forma_Pagamento(descricao)values('Cartao de Débito A vista');

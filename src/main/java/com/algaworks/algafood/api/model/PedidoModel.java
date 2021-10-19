@@ -16,10 +16,8 @@ public class PedidoModel {
     private BigDecimal subTotal;
     private BigDecimal taxaFrete;
     private BigDecimal valorTotal;
-    @Embedded
     private Endereco enderecoEntrega;
     private StatusPedido status;
-    @CreationTimestamp
     private OffsetDateTime dataCriacao;
     private OffsetDateTime dataConfirmacao;
     private OffsetDateTime dataCancelamento;

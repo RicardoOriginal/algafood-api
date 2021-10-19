@@ -16,14 +16,14 @@ import com.algaworks.algafood.domain.repository.FormaPagamentoRepository;
 public class BuscaFormaPagamentoMain {
 	
 	public static void main(String[] args) {
-		ApplicationContext applicationContext = new SpringApplicationBuilder(AlgafoodApiApplication.class)
-				.web(WebApplicationType.NONE)
-				.run(args);
-		
-		FormaPagamentoRepository formaPagamento = applicationContext.getBean(FormaPagamentoRepository.class);
-		
-		FormaPagamento pagamento = formaPagamento.porId(1L);
-		
-		System.out.println(pagamento.getDescricao());
+//		ApplicationContext applicationContext = new SpringApplicationBuilder(AlgafoodApiApplication.class)
+//				.web(WebApplicationType.NONE)
+//				.run(args);
+//
+//		FormaPagamentoRepository formaPagamento = applicationContext.getBean(FormaPagamentoRepository.class);
+//
+//		FormaPagamento pagamento = formaPagamento.findById(1L);
+//
+//		System.out.println(pagamento.getDescricao());
 	}
 }

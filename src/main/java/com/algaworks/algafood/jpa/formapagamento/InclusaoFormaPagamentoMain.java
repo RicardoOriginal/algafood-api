@@ -16,27 +16,27 @@ import com.algaworks.algafood.domain.repository.FormaPagamentoRepository;
 public class InclusaoFormaPagamentoMain {
 	
 	public static void main(String[] args) {
-		ApplicationContext applicationContext = new SpringApplicationBuilder(AlgafoodApiApplication.class)
-				.web(WebApplicationType.NONE)
-				.run(args);
-		
-		FormaPagamentoRepository formasPagamento = applicationContext.getBean(FormaPagamentoRepository.class);
-		
-		FormaPagamento dinheiro = new FormaPagamento();
-		dinheiro.setDescricao("Dinheiro");
-		
-		FormaPagamento cartaoDebito = new FormaPagamento();
-		cartaoDebito.setDescricao("Cartao de débito");
-		
-		FormaPagamento cartaoCredito = new FormaPagamento();
-		cartaoCredito.setDescricao("Cartao de crédito");
-		
-		dinheiro = formasPagamento.salvar(dinheiro);
-		cartaoDebito = formasPagamento.salvar(cartaoDebito);
-		cartaoCredito = formasPagamento.salvar(cartaoCredito);
-		
-		System.out.printf("%d - %s\n", dinheiro.getId(), dinheiro.getDescricao());
-		System.out.printf("%d - %s\n", cartaoDebito.getId(), cartaoDebito.getDescricao());
-		System.out.printf("%d - %s\n", cartaoCredito.getId(), cartaoCredito.getDescricao());
+//		ApplicationContext applicationContext = new SpringApplicationBuilder(AlgafoodApiApplication.class)
+//				.web(WebApplicationType.NONE)
+//				.run(args);
+//
+//		FormaPagamentoRepository formasPagamento = applicationContext.getBean(FormaPagamentoRepository.class);
+//
+//		FormaPagamento dinheiro = new FormaPagamento();
+//		dinheiro.setDescricao("Dinheiro");
+//
+//		FormaPagamento cartaoDebito = new FormaPagamento();
+//		cartaoDebito.setDescricao("Cartao de débito");
+//
+//		FormaPagamento cartaoCredito = new FormaPagamento();
+//		cartaoCredito.setDescricao("Cartao de crédito");
+//
+//		dinheiro = formasPagamento.salvar(dinheiro);
+//		cartaoDebito = formasPagamento.salvar(cartaoDebito);
+//		cartaoCredito = formasPagamento.salvar(cartaoCredito);
+//
+//		System.out.printf("%d - %s\n", dinheiro.getId(), dinheiro.getDescricao());
+//		System.out.printf("%d - %s\n", cartaoDebito.getId(), cartaoDebito.getDescricao());
+//		System.out.printf("%d - %s\n", cartaoCredito.getId(), cartaoCredito.getDescricao());
 	}
 }

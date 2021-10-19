@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PedidoInput {
-    private Long id;
     private BigDecimal subTotal;
     private BigDecimal taxaFrete;
     private BigDecimal valorTotal;

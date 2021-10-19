@@ -18,16 +18,16 @@ import com.algaworks.algafood.domain.repository.FormaPagamentoRepository;
 public class ConsultaFormaPagamentoMain {
 	
 	public static void main(String[] args) {
-		ApplicationContext applicationContext = new SpringApplicationBuilder(AlgafoodApiApplication.class)
-				.web(WebApplicationType.NONE)
-				.run(args);
-		
-		FormaPagamentoRepository formasPagamento = applicationContext.getBean(FormaPagamentoRepository.class);
-		
-		List<FormaPagamento> todasFormasPagamento = formasPagamento.todas();
-		
-		todasFormasPagamento.forEach(formaPagamento ->{
-			System.out.printf("%d - %s\n", formaPagamento.getId(), formaPagamento.getDescricao());
-		});
+//		ApplicationContext applicationContext = new SpringApplicationBuilder(AlgafoodApiApplication.class)
+//				.web(WebApplicationType.NONE)
+//				.run(args);
+//
+//		FormaPagamentoRepository formasPagamento = applicationContext.getBean(FormaPagamentoRepository.class);
+//
+//		List<FormaPagamento> todasFormasPagamento = formasPagamento.todas();
+//
+//		todasFormasPagamento.forEach(formaPagamento ->{
+//			System.out.printf("%d - %s\n", formaPagamento.getId(), formaPagamento.getDescricao());
+//		});
 	}
 }
