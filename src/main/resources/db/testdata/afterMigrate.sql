@@ -58,8 +58,7 @@ insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) val
 
 insert into produto(nome, descricao, preco, ativo, restaurante_id)values('Isca de peixe', 'filézinhos de peixe fritos', 33, 1, 1);
 
-insert into grupo(nome)values('administradores');
-insert into grupo(nome)values('gerentes');
+insert into grupo (nome) values ('administrador'), ('Gerente'), ('Vendedor'), ('Secretária'), ('Cadastrador');
 
 insert into grupo_permissao(grupo_id, permissao_id)values(1, 1), (1, 2), (1, 3), (2, 1), (2, 2);
 
