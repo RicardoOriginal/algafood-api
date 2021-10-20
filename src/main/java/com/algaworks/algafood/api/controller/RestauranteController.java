@@ -5,6 +5,8 @@ import com.algaworks.algafood.api.assembler.RestauranteModelAssembler;
 import com.algaworks.algafood.api.model.RestauranteModel;
 import com.algaworks.algafood.api.model.input.RestauranteInput;
 import com.algaworks.algafood.core.validation.ValidacaoException;
+import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Restaurante;
@@ -52,8 +54,12 @@ public class RestauranteController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
-		final Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
-		return restauranteModelAssembler.toModel(restauranteService.salvar(restaurante));
+		try {
+			final Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
+			return restauranteModelAssembler.toModel(restauranteService.salvar(restaurante));
+		}catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e){
+			throw new NegocioException(e.getMessage());
+		}
 	}
 
 	@GetMapping("/{restauranteId}")
@@ -73,7 +79,7 @@ public class RestauranteController {
 			Restaurante restauranteAtual = restauranteService.buscarOuFalhar(restauranteId);
 			restauranteInputDisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
 			return restauranteModelAssembler.toModel(restauranteService.salvar(restauranteAtual));
-		}catch (RestauranteNaoEncontradoException e){
+		}catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e){
 			throw new NegocioException(e.getMessage());
 		}
 	}
