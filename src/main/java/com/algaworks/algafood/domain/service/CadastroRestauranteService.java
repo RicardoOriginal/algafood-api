@@ -3,6 +3,7 @@ package com.algaworks.algafood.domain.service;
 import com.algaworks.algafood.domain.exception.*;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Cozinha;
+import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import org.springframework.beans.BeanUtils;
@@ -31,6 +32,9 @@ public class CadastroRestauranteService {
 
 	@Autowired
 	private CadastroCidadeService cidadeService;
+
+	@Autowired
+	private FormaPagamentoService formaPagamentoService;
 
 	public static final String MSG_RESTAURANTE_EM_USO = "Restaurante de código %d não pode ser removido pois está em uso";
 
@@ -62,6 +66,20 @@ public class CadastroRestauranteService {
 		restauranteAtual.inativar();
 	}
 
+	@Transactional
+	public void resassociarFormaPagamento(Long restauranteId, Long formaPagamentoId){
+		Restaurante restaurante = buscarOuFalhar(restauranteId);
+		FormaPagamento formaPagamento = formaPagamentoService.buscarOuFalhar(formaPagamentoId);
+		restaurante.removerFormaPagamento(formaPagamento);
+	}
+
+	@Transactional
+	public void associarFormaPagamento(Long restauranteId, Long formaPagamentoId){
+		Restaurante restaurante = buscarOuFalhar(restauranteId);
+		FormaPagamento formaPagamento = formaPagamentoService.buscarOuFalhar(formaPagamentoId);
+		restaurante.adicionarFormaPagamento(formaPagamento);
+	}
+
 	public Restaurante buscarOuFalhar(Long restauranteId) {
 		return restauranteRepository.findById(restauranteId).orElseThrow(
 				()-> new RestauranteNaoEncontradoException(restauranteId));
@@ -90,5 +108,17 @@ public class CadastroRestauranteService {
 			throw new EntidadeEmUsoException(
 					String.format(MSG_RESTAURANTE_EM_USO, restauranteId));
 		}
+	}
+
+	@Transactional
+	public void abrir(Long restauranteId){
+		final Restaurante restaurante = buscarOuFalhar(restauranteId);
+		restaurante.abrir();
+	}
+
+	@Transactional
+	public void fechar(Long restauranteId){
+		final Restaurante restaurante = buscarOuFalhar(restauranteId);
+		restaurante.fechar();
 	}
 }

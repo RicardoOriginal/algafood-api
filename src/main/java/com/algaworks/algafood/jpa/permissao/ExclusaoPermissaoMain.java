@@ -25,6 +25,6 @@ public class ExclusaoPermissaoMain {
 		Permissao permissao = new Permissao();
 		permissao.setId(1L);
 		
-		permissoes.remover(permissao);
+//		permissoes.remover(permissao);
 	}
 }

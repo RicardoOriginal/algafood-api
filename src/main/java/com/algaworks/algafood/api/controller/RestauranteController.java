@@ -144,4 +144,16 @@ public class RestauranteController {
 			throw new HttpMessageNotReadableException(e.getMessage(), rootcCause, serverHttpRequest);
 		}
 	}
+
+	@PutMapping("/{restauranteId}/abertura")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void abrir(@PathVariable Long restauranteId){
+		restauranteService.abrir(restauranteId);
+	}
+
+	@PutMapping("/{restauranteId}/fechamento")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void fechar(@PathVariable Long restauranteId){
+		restauranteService.fechar(restauranteId);
+	}
 }

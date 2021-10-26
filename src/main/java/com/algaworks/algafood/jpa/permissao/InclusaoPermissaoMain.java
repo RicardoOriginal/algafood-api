@@ -30,10 +30,10 @@ public class InclusaoPermissaoMain {
 		permissao2.setNome("altera usuário");
 		permissao2.setDescricao("Permite alterar usuário");
 		
-		permissao1 = permissoes.salvar(permissao1);
-		permissao2 = permissoes.salvar(permissao2);
-		
-		System.out.printf("%d - %s\n", permissao1.getId(), permissao1.getNome());
-		System.out.printf("%d - %s\n", permissao2.getId(), permissao2.getNome());
+//		permissao1 = permissoes.salvar(permissao1);
+//		permissao2 = permissoes.salvar(permissao2);
+//
+//		System.out.printf("%d - %s\n", permissao1.getId(), permissao1.getNome());
+//		System.out.printf("%d - %s\n", permissao2.getId(), permissao2.getNome());
 	}
 }

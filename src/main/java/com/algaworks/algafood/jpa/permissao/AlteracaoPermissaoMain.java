@@ -27,6 +27,6 @@ public class AlteracaoPermissaoMain {
 		permissao.setNome("Alterar usuários");
 		permissao.setDescricao("Permite alterar usuários");
 		
-		permissoes.salvar(permissao);
+//		permissoes.salvar(permissao);
 	}
 }

@@ -42,9 +42,12 @@ insert into cidade(id, nome, estado_id)values(3, 'Belo Horizonte', 2);
 insert into cidade(id, nome, estado_id)values(4, 'São Paulo', 3);
 insert into cidade(id, nome, estado_id)values(5, 'Fortaleza', 4);
 
-insert into restaurante(id, nome, taxa_frete, cozinha_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, data_cadastro, data_atualizacao, ativo)values(1, 'Comida Caseira', 5.5, 1, 1, '75800-000', 'Rua Santos Dumont', '1657', 'Próximo a clinica Plena', 'Samuel Ganham', utc_timestamp, utc_timestamp, true);
-insert into restaurante(id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo)values(2, 'Itadakimazu', 9.8, 2, utc_timestamp, utc_timestamp, true);
-insert into restaurante(id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo)values(3, 'Mae Joana', 13.5, 2, utc_timestamp, utc_timestamp, true);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro) values (1, 'Thai Gourmet', 10, 1, utc_timestamp, utc_timestamp, true, true, 1, '38400-999', 'Rua João Pinheiro', '1000', 'Centro');
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto) values (2, 'Thai Delivery', 9.50, 1, utc_timestamp, utc_timestamp, true, true);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto) values (3, 'Tuk Tuk Comida Indiana', 15, 2, utc_timestamp, utc_timestamp, true, true);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto) values (4, 'Java Steakhouse', 12, 3, utc_timestamp, utc_timestamp, true, true);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto) values (5, 'Lanchonete do Tio Sam', 11, 4, utc_timestamp, utc_timestamp, true, true);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto) values (6, 'Bar da Maria', 6, 4, utc_timestamp, utc_timestamp, true, true);
 
 insert into forma_Pagamento(descricao)values('Dinheiro');
 insert into forma_Pagamento(descricao)values('Cartao de Débito A vista');
@@ -61,7 +64,6 @@ insert into produto(nome, descricao, preco, ativo, restaurante_id)values('Isca d
 insert into grupo (nome) values ('administrador'), ('Gerente'), ('Vendedor'), ('Secretária'), ('Cadastrador');
 
 insert into grupo_permissao(grupo_id, permissao_id)values(1, 1), (1, 2), (1, 3), (2, 1), (2, 2);
-
 
 insert into usuario (nome, email, senha, data_cadastro) values
     ('Ricardo', 'ricardolima.ti@gmail.com', 'Ricardo0511', utc_timestamp),

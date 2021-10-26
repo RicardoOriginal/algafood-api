@@ -24,10 +24,10 @@ public class ConsultaPermissoesMain {
 		
 		PermissaoRepository permissoes = applicationContext.getBean(PermissaoRepository.class);
 		
-		List<Permissao> todaspermissoes = permissoes.todas();
+//		List<Permissao> todaspermissoes = permissoes.todas();
 		
-		todaspermissoes.forEach(permissao ->{
-			System.out.println(permissao);
-		});
+//		todaspermissoes.forEach(permissao ->{
+//			System.out.println(permissao);
+//		});
 	}
 }
