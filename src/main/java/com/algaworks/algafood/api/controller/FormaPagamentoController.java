@@ -5,7 +5,7 @@ import com.algaworks.algafood.api.assembler.FormaPagamentoModelAssembler;
 import com.algaworks.algafood.api.model.FormaPagamentoModel;
 import com.algaworks.algafood.api.model.input.FormaPagamentoInput;
 import com.algaworks.algafood.domain.model.FormaPagamento;
-import com.algaworks.algafood.domain.service.FormaPagamentoService;
+import com.algaworks.algafood.domain.service.CadastroFormaPagamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +18,7 @@ import java.util.List;
 public class FormaPagamentoController {
 
     @Autowired
-    private FormaPagamentoService formaPagamentoService;
+    private CadastroFormaPagamentoService cadastroFormaPagamentoService;
 
     @Autowired
     private FormaPagamentoInputDisassembler formaPagamentoInputDisassembler;
@@ -30,30 +30,30 @@ public class FormaPagamentoController {
     @ResponseStatus(HttpStatus.CREATED)
     public FormaPagamentoModel adicionar(@RequestBody @Valid FormaPagamentoInput formaPagamentoInput){
         FormaPagamento formaPagamento = formaPagamentoInputDisassembler.toDomainObject(formaPagamentoInput);
-        return formaPagamentoModelAssembler.toModel(formaPagamentoService.salvar(formaPagamento));
+        return formaPagamentoModelAssembler.toModel(cadastroFormaPagamentoService.salvar(formaPagamento));
     }
 
     @GetMapping("/{formaPagamentoId}")
     public FormaPagamentoModel buscar(@PathVariable Long formaPagamentoId){
-        return formaPagamentoModelAssembler.toModel(formaPagamentoService.buscarOuFalhar(formaPagamentoId));
+        return formaPagamentoModelAssembler.toModel(cadastroFormaPagamentoService.buscarOuFalhar(formaPagamentoId));
     }
 
     @GetMapping
     public List<FormaPagamentoModel> listar(){
-        return formaPagamentoModelAssembler.toCollectionModel(formaPagamentoService.listar());
+        return formaPagamentoModelAssembler.toCollectionModel(cadastroFormaPagamentoService.listar());
     }
 
     @PutMapping("{formaPagamentoId}")
     public FormaPagamentoModel atualizar(@PathVariable Long formaPagamentoId,
                                          @RequestBody @Valid FormaPagamentoInput formaPagamentoInput){
-        FormaPagamento formaPagamento = formaPagamentoService.buscarOuFalhar(formaPagamentoId);
+        FormaPagamento formaPagamento = cadastroFormaPagamentoService.buscarOuFalhar(formaPagamentoId);
         formaPagamentoInputDisassembler.copyToDomainObject(formaPagamentoInput, formaPagamento);
-        return formaPagamentoModelAssembler.toModel(formaPagamentoService.salvar(formaPagamento));
+        return formaPagamentoModelAssembler.toModel(cadastroFormaPagamentoService.salvar(formaPagamento));
     }
 
     @DeleteMapping("/{formaPagamentoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletar(@PathVariable Long formaPagamentoId){
-        formaPagamentoService.excluir(formaPagamentoId);
+        cadastroFormaPagamentoService.excluir(formaPagamentoId);
     }
 }

@@ -96,6 +96,18 @@ public class RestauranteController {
 		restauranteService.inativar(restauranteId);
 	}
 
+	@PutMapping("/ativacoes")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void ativarMultiplos(@RequestBody List<Long> restauranteIds){
+		restauranteService.ativar(restauranteIds);
+	}
+
+	@DeleteMapping("/ativacoes")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void inativarMultiplos(@RequestBody List<Long> restauranteIds){
+		restauranteService.inativar(restauranteIds);
+	}
+
 	@PatchMapping("/{restauranteId}")
 	public RestauranteModel alterarParcial(@PathVariable Long restauranteId,
 									  @RequestBody Map<String, Object> campos,

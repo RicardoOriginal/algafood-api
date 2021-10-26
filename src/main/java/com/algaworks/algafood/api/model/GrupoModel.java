@@ -7,8 +7,6 @@ import java.util.List;
 
 @Getter
 @Setter
-public class GrupoModel {
-    private Long id;
-    private String nome;
+public class GrupoModel extends GrupoSemPermissaoModel{
     private List<PermissaoModel> permissoes;
 }
