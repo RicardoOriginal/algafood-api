@@ -10,19 +10,13 @@ import java.util.List;
 
 @Getter
 @Setter
-public class PedidoModel {
+public class PedidoResumoModel {
     private Long id;
     private BigDecimal subTotal;
     private BigDecimal taxaFrete;
     private BigDecimal valorTotal;
     private StatusPedido status;
     private OffsetDateTime dataCriacao;
-    private OffsetDateTime dataConfirmacao;
-    private OffsetDateTime dataCancelamento;
-    private OffsetDateTime dataEntrega;
     private RestauranteResumoModel restaurante;
     private UsuarioModel cliente;
-    private FormaPagamentoModel formaPagamento;
-    private EnderecoModel enderecoEntrega;
-    private List<ItemPedidoModel> itens;
 }

@@ -1,31 +1,16 @@
-package com.algaworks.algafood.domain.model;
+package com.algaworks.algafood.api.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
-
-@Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Entity
-public class ItemPedido {
-
-    @EqualsAndHashCode.Include
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+@Getter
+@Setter
+public class ItemPedidoModel {
+    private Long produtoId;
+    private String produtoNome;
+    private Integer quantidade;
     private BigDecimal precoUnitario;
     private BigDecimal precoTotal;
-    private Integer quantidade;
     private String observacao;
-
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private Pedido pedido;
-
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private Produto produto;
 }

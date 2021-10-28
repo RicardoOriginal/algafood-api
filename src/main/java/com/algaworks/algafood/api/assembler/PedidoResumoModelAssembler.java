@@ -1,6 +1,6 @@
 package com.algaworks.algafood.api.assembler;
 
-import com.algaworks.algafood.api.model.PedidoModel;
+import com.algaworks.algafood.api.model.PedidoResumoModel;
 import com.algaworks.algafood.domain.model.Pedido;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,16 +10,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class PedidoModelAssembler {
+public class PedidoResumoModelAssembler {
 
     @Autowired
     private ModelMapper modelMapper;
 
-    public PedidoModel toModel(final Pedido pedido) {
-        return modelMapper.map(pedido, PedidoModel.class);
+    public PedidoResumoModel toModel(final Pedido pedido) {
+        return modelMapper.map(pedido, PedidoResumoModel.class);
     }
 
-    public List<PedidoModel> toCollectionModel(final List<Pedido> pedidos){
+    public List<PedidoResumoModel> toCollectionModel(final List<Pedido> pedidos){
         return pedidos.stream()
                 .map(this::toModel)
                 .collect(Collectors.toList());

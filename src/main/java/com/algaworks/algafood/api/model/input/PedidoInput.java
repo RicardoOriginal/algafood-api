@@ -1,24 +1,36 @@
 package com.algaworks.algafood.api.model.input;
 
 import com.algaworks.algafood.domain.model.*;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 public class PedidoInput {
-    private BigDecimal subTotal;
-    private BigDecimal taxaFrete;
-    private BigDecimal valorTotal;
+
+    @Valid
+    @NotNull
+    private RestauranteIdInput restaurante;
+
+    @Valid
+    @NotNull
     private Endereco enderecoEntrega;
-    private StatusPedido status;
-    private OffsetDateTime dataCriacao;
-    private OffsetDateTime dataConfirmacao;
-    private OffsetDateTime dataCancelamento;
-    private OffsetDateTime dataEntrega;
-    private FormaPagamento formaPagamento;
-    private Restaurante restaurante;
-    private Usuario cliente;
-    private List<ItemPedido> itens = new ArrayList<>();
+
+    @Valid
+    @NotNull
+    private FormaPagamentoIdInput formaPagamento;
+
+    @Valid
+    @Size(min = 1)
+    @NotNull
+    private List<ItemPedidoInput> itens = new ArrayList<>();
 }
