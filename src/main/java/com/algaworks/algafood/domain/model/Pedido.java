@@ -57,6 +57,9 @@ public class Pedido {
                 .map(ItemPedido::getPrecoTotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
+
+        
+
         this.valorTotal = subTotal.add(this.taxaFrete);
     }
 
