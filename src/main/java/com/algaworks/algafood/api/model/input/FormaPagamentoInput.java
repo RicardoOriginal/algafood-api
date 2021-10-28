@@ -11,6 +11,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FormaPagamentoInput {
-
 	private String descricao;
 }

@@ -24,20 +24,13 @@ import java.util.List;
 public class Cozinha {
 	
 	@Id
-	@NotNull(groups = Groups.CozinhaId.class)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
 	private Long id;
 	
-//	@JsonIgnore
-//	@JsonProperty("titulo")
-	@NotBlank
 	@Column(nullable = false)
 	private String nome;
 
-//	@Column(name = "observacao", nullable = false)
-//	private Integer descricao;
-	
 	@OneToMany(mappedBy = "cozinha")
 	private List<Restaurante> restaurantes = new ArrayList<>();
 }
