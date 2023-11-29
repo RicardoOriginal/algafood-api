@@ -9,8 +9,13 @@ import com.algaworks.algafood.api.model.input.PedidoInput;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.model.Usuario;
+import com.algaworks.algafood.domain.repository.filter.PedidoFilter;
 import com.algaworks.algafood.domain.service.CadastroPedidoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,25 +24,20 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/pedidos")
+@RequiredArgsConstructor
 public class PedidoController {
 
-    @Autowired
-    private CadastroPedidoService cadastroPedidoService;
-
-    @Autowired
-    private PedidoInputDisassembler pedidoInputDisassembler;
-
-    @Autowired
-    private PedidoModelAssembler pedidoModelAssembler;
-
-    @Autowired
-    private PedidoResumoModelAssembler pedidoResumoModelAssembler;
+    private final CadastroPedidoService cadastroPedidoService;
+    private final PedidoInputDisassembler pedidoInputDisassembler;
+    private final PedidoModelAssembler pedidoModelAssembler;
+    private final PedidoResumoModelAssembler pedidoResumoModelAssembler;
 
 
     @GetMapping
-    public List<PedidoResumoModel> listar(){
-        List<Pedido> pedidos = cadastroPedidoService.listar();
-        return pedidoResumoModelAssembler.toCollectionModel(pedidos);
+    public Page<PedidoResumoModel> listar(@PageableDefault Pageable pageable, PedidoFilter filter){
+        Page<Pedido> pedidoPage = cadastroPedidoService.listar(pageable, filter);
+        List<PedidoResumoModel> pedidosResumoModel = pedidoResumoModelAssembler .toCollectionModel(pedidoPage.getContent());
+        return new PageImpl<>(pedidosResumoModel, pageable, pedidoPage.getTotalElements());
     }
 
     @PostMapping
@@ -45,10 +45,8 @@ public class PedidoController {
     public PedidoModel adicionar(@RequestBody @Valid PedidoInput pedidoInput) {
         try {
             Pedido pedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
-            // TODO pegar usuário autenticado
             pedido.setCliente(new Usuario());
             pedido.getCliente().setId(1L);
-
             pedido = cadastroPedidoService.emitir(pedido);
             return pedidoModelAssembler.toModel(pedido);
         }catch (Exception e){

@@ -4,32 +4,24 @@ import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.PedidoNaoEncontradoException;
 import com.algaworks.algafood.domain.model.*;
 import com.algaworks.algafood.domain.repository.PedidoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.algaworks.algafood.domain.repository.filter.PedidoFilter;
+import com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
+@RequiredArgsConstructor
 public class CadastroPedidoService {
 
-    @Autowired
-    private PedidoRepository pedidoRepository;
-
-    @Autowired
-    private CadastroRestauranteService cadastroRestaurante;
-
-    @Autowired
-    private CadastroCidadeService cadastroCidade;
-
-    @Autowired
-    private CadastroUsuarioService cadastroUsuario;
-
-    @Autowired
-    private CadastroProdutoService cadastroProduto;
-
-    @Autowired
-    private CadastroFormaPagamentoService cadastroFormaPagamento;
+    private final PedidoRepository pedidoRepository;
+    private final CadastroRestauranteService cadastroRestaurante;
+    private final CadastroCidadeService cadastroCidade;
+    private final CadastroUsuarioService cadastroUsuario;
+    private final CadastroProdutoService cadastroProduto;
+    private final CadastroFormaPagamentoService cadastroFormaPagamento;
 
     @Transactional
     public Pedido emitir(Pedido pedido) {
@@ -42,8 +34,8 @@ public class CadastroPedidoService {
         return pedidoRepository.save(pedido);
     }
 
-    public List<Pedido> listar(){
-        return pedidoRepository.findAll();
+    public Page<Pedido> listar(Pageable pageable, PedidoFilter filter){
+        return pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filter), pageable);
     }
 
     public Pedido buscarOuFalhar(Long pedidoId){

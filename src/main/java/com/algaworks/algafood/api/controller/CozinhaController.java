@@ -8,7 +8,7 @@ import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -27,16 +27,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cozinhas")
+@RequiredArgsConstructor
 public class CozinhaController {
 
-    @Autowired
-    private CadastroCozinhaService cozinhaService;
-
-    @Autowired
-    private CozinhaInputDisassembler cozinhaInputDisassembler;
-
-    @Autowired
-    private CozinhaModelAssembler cozinhaModelAssembler;
+    private final CadastroCozinhaService cozinhaService;
+    private final CozinhaInputDisassembler cozinhaInputDisassembler;
+    private final CozinhaModelAssembler cozinhaModelAssembler;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -58,8 +54,7 @@ public class CozinhaController {
     public Page<CozinhaModel> listar(@PageableDefault(size = 10) Pageable pageable) {
         Page<Cozinha> cozinhasPage = cozinhaService.listar(pageable);
         List<CozinhaModel> cozinhaModels = cozinhaModelAssembler.toCollectionModel(cozinhasPage.getContent());
-        Page<CozinhaModel> cozinhaModelPage = new PageImpl<>(cozinhaModels, pageable, cozinhasPage.getTotalElements());
-        return cozinhaModelPage;
+        return new PageImpl<>(cozinhaModels, pageable, cozinhasPage.getTotalElements());
     }
 
     @PutMapping("/{cozinhaId}")
