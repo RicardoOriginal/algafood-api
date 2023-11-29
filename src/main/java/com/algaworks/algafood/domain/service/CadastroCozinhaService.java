@@ -7,10 +7,11 @@ import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 /**
  * Serviço responsável por implementar regras de negócio de cozinhas
@@ -36,8 +37,8 @@ public class CadastroCozinhaService {
 				() -> new CozinhaNaoEncontradaException(cozinhaId));
 	}
 
-	public List<Cozinha> listar(){
-		return cozinhaRepository.findAll();
+	public Page<Cozinha> listar(Pageable pageable){
+		return cozinhaRepository.findAll(pageable);
 	}
 
 	@Transactional
