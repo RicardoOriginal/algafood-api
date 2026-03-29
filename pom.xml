@@ -18,7 +18,7 @@
 	<properties>
 		<java.version>13</java.version>
 		<modelmapper.version>2.3.0</modelmapper.version>
-		<jasperreports.version>6.20.6</jasperreports.version>
+		<jasperreports.version>7.0.4</jasperreports.version>
 	</properties>
 
 	<dependencies>
